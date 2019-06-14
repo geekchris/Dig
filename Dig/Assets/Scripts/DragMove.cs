@@ -5,13 +5,14 @@ using UnityEngine;
 public class DragMove : MonoBehaviour
 {
     private Vector3 touchPosition;
-    private Rigidbody2D rb;
     private Vector3 direction;
-    private float moveSpeed = 10f;
+    private float moveSpeed = 5f;
+    private Vector3 pos;
+    private float playerRadius = 0.5f;
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        
     }
 
     // Update is called once per frame
@@ -21,13 +22,25 @@ public class DragMove : MonoBehaviour
         {
             Touch touch = Input.GetTouch(0);
             touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
-            Debug.Log(touchPosition);
             touchPosition.z = 0;
             direction.x = (touchPosition.x - transform.position.x);
-            rb.velocity = new Vector2(direction.x, direction.y) * moveSpeed;
+            pos = transform.position; 
+            Vector3 velocity = new Vector3(direction.x, direction.y, 0) * moveSpeed * Time.deltaTime;
+            pos += velocity;
 
+            float screenRatio = (float)Screen.width / (float)Screen.height;
+            float widthOrtho = Camera.main.orthographicSize * screenRatio;
+            if(pos.x + playerRadius > widthOrtho)
+            {
+                pos.x = widthOrtho - playerRadius;
+            }
+            if(pos.x - playerRadius < -widthOrtho)
+            {
+                pos.x = -widthOrtho + playerRadius;
+            }
             if (touch.phase == TouchPhase.Ended)
-                rb.velocity = Vector2.zero;
+                velocity = Vector3.zero;
+            transform.position = pos;
         }
     }
 }
