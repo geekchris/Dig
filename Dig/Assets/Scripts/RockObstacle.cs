@@ -22,7 +22,6 @@ public class RockObstacle : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             other.GetComponent<Player>().health -= damage;
-            Debug.Log(other.GetComponent<Player>().health);
             Destroy(gameObject);
         }
         if(other.CompareTag("Destroyer"))

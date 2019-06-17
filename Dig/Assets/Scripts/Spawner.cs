@@ -19,6 +19,7 @@ public class Spawner : MonoBehaviour
     void Start()
     {
         max = GetComponent<MeshRenderer>().bounds.size.x / 2;
+        antSpawnTime = 3;
     }
 
     // Update is called once per frame
@@ -34,6 +35,17 @@ public class Spawner : MonoBehaviour
         else
         {
             timeBtwSpawn -= Time.deltaTime;
+        }
+
+        if(antSpawnTime <= 0)
+        {
+            Vector3 position = new Vector3(Random.Range(-max + 0.5f, max - 0.5f), transform.position.y, transform.position.z);
+            Instantiate(ant, position, Quaternion.identity);
+            antSpawnTime = Random.Range(5.0f, 10.0f);
+        }
+        else
+        {
+            antSpawnTime -= Time.deltaTime;
         }
     }
 }
