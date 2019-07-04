@@ -7,9 +7,16 @@ public class RockObstacle : MonoBehaviour
     // Start is called before the first frame update
     private int damage = 1;
     private int speed = 2;
+    CameraShake camShake;
+
+
     void Start()
     {
-        
+        GameObject gm = GameObject.FindWithTag("GameMaster");
+        if(gm != null)
+        {
+            camShake = gm.GetComponent<CameraShake>();
+        }
     }
 
     // Update is called once per frame
@@ -19,10 +26,11 @@ public class RockObstacle : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Player") && other.GetComponent<Player>().tookDamage == false)
         {
             other.GetComponent<Player>().health -= damage;
-            Destroy(gameObject);
+            other.GetComponent<Player>().tookDamage = true;
+            camShake.Shake(0.1f, 0.2f);
         }
         if(other.CompareTag("Destroyer"))
         {

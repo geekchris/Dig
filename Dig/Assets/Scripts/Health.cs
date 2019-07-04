@@ -7,13 +7,22 @@ public class Health : MonoBehaviour
     public GameObject player;
     public GameObject heartOne, heartTwo, heartThree;
     public int playerHealth;
+
+    private int numHearts;
+    public bool playerHealed;
+
+    private Animator animOne, animTwo, animThree;
     // Start is called before the first frame update
     void Start()
     {
         playerHealth = player.GetComponent<Player>().health;
-        heartOne.GetComponent<Animator>().speed = 0f;
-        heartTwo.GetComponent<Animator>().speed = 0f;
-        heartThree.GetComponent<Animator>().speed = 0f;
+
+        animOne = heartOne.GetComponent<Animator>();
+
+        animTwo = heartTwo.GetComponent<Animator>();
+        animThree = heartThree.GetComponent<Animator>();
+
+        numHearts = 0;
     }
 
     // Update is called once per frame
@@ -21,9 +30,25 @@ public class Health : MonoBehaviour
     {
 
         playerHealth = player.GetComponent<Player>().health;
+        playerHealed = player.GetComponent<Player>().justHealed;
         if(playerHealth > 3)
         {
             playerHealth = 3;
+        }
+        if(playerHealed == true)
+        {
+           
+            if(numHearts == 1)
+            {
+                animThree.Play("ReverseHeart");
+            }  
+            else if(numHearts == 2)
+            {
+                animTwo.Play("ReverseHeart");
+                animThree.Play("ReverseHeart");
+            }
+            player.GetComponent<Player>().justHealed = false;
+            numHearts = 0;
         }
         switch (playerHealth)
         {
@@ -33,16 +58,15 @@ public class Health : MonoBehaviour
                 heartThree.gameObject.SetActive(true);
                 break;
             case 2:
-                Debug.Log("2 hearts");
-                heartThree.GetComponent<Animator>().speed = 1f;
+                animThree.Play("Heart");
+                numHearts = 1;
                 break;
             case 1:
-                Debug.Log("1 heart");
-                heartTwo.GetComponent<Animator>().speed = 1f;
+                animTwo.Play("Heart");
+                numHearts = 2;
                 break;
             case 0:
-                Debug.Log("0 hearts");
-                heartOne.GetComponent<Animator>().speed = 1f;
+                animOne.Play("Heart");
                 break;
         }
     }

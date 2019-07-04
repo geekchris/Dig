@@ -12,9 +12,20 @@ public class AntObstacle : MonoBehaviour
     private Vector3 pos;
     private Vector3 velocity;
     private float playerRadius = 0.5f;
+    CameraShake camShake;
+
+   
     void Start()
     {
-        
+        GameObject gm = GameObject.FindWithTag("GameMaster");
+        if(gm != null)
+        {
+            camShake = gm.GetComponent<CameraShake>();
+            if (camShake == null)
+            {
+                Debug.LogError("No camerashake ");
+            }
+        }
     }
     void Update()
     {
@@ -48,9 +59,12 @@ public class AntObstacle : MonoBehaviour
     // Update is called once per frame
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.GetComponent<Player>().tookDamage == false) 
         {
             other.GetComponent<Player>().health -= damage;
+            other.GetComponent<Player>().tookDamage = true;
+            camShake.Shake(0.1f, 0.2f);
+
         }
         if(other.CompareTag("Destroyer"))
         {
