@@ -9,14 +9,17 @@ public class RockObstacle : MonoBehaviour
     private int speed = 2;
     CameraShake camShake;
 
+    private ChargeMeter chargeMeter;
+
 
     void Start()
     {
-        GameObject gm = GameObject.FindWithTag("GameMaster");
-        if(gm != null)
-        {
-            camShake = gm.GetComponent<CameraShake>();
-        }
+        /**GameObject gm = GameObject.FindWithTag("GameMaster");
+        *if(gm != null)
+        *{
+        *   camShake = gm.GetComponent<CameraShake>();
+        }**/
+        chargeMeter = GameObject.Find("Charge Meter").GetComponent<ChargeMeter>();
     }
 
     // Update is called once per frame
@@ -26,11 +29,13 @@ public class RockObstacle : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Player") && other.GetComponent<Player>().tookDamage == false)
+        if (other.CompareTag("Player"))//&& other.GetComponent<Player>().tookDamage == false)
         {
-            other.GetComponent<Player>().health -= damage;
-            other.GetComponent<Player>().tookDamage = true;
-            camShake.Shake(0.1f, 0.2f);
+            //other.GetComponent<Player>().health -= damage;
+            //other.GetComponent<Player>().tookDamage = true;
+            //camShake.Shake(0.1f, 0.2f);
+            chargeMeter.IncrementProgress(0.10f);
+            Destroy(gameObject);
         }
         if(other.CompareTag("Destroyer"))
         {

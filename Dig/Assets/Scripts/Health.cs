@@ -18,10 +18,11 @@ public class Health : MonoBehaviour
         playerHealth = player.GetComponent<Player>().health;
 
         animOne = heartOne.GetComponent<Animator>();
-
+        animOne.speed = 0f;
         animTwo = heartTwo.GetComponent<Animator>();
+        animTwo.speed = 0f;
         animThree = heartThree.GetComponent<Animator>();
-
+        animThree.speed = 0f;
         numHearts = 0;
     }
 
@@ -40,12 +41,12 @@ public class Health : MonoBehaviour
            
             if(numHearts == 1)
             {
-                animThree.Play("ReverseHeart");
+                animThree.speed = -1f;
             }  
             else if(numHearts == 2)
             {
-                animTwo.Play("ReverseHeart");
-                animThree.Play("ReverseHeart");
+                //animTwo.Play("ReverseHeart");
+                //animThree.Play("ReverseHeart");
             }
             player.GetComponent<Player>().justHealed = false;
             numHearts = 0;
@@ -58,15 +59,15 @@ public class Health : MonoBehaviour
                 heartThree.gameObject.SetActive(true);
                 break;
             case 2:
-                animThree.Play("Heart");
+                animThree.speed = 1f;
                 numHearts = 1;
                 break;
             case 1:
-                animTwo.Play("Heart");
+                animTwo.speed = 1f;
                 numHearts = 2;
                 break;
             case 0:
-                animOne.Play("Heart");
+                animOne.speed = 1f;
                 break;
         }
     }
