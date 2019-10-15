@@ -7,7 +7,7 @@ public class AntObstacle : MonoBehaviour
     // Start is called before the first frame update
     private int damage = 1;
     private int vertSpeed = 2;
-    private int horSpeed = 3;
+    private int horSpeed = 2;
     private int direction = 0; //0 is going right, 1 is going left
     private Vector3 pos;
     private Vector3 velocity;

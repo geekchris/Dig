@@ -17,14 +17,16 @@ public class Spawner : MonoBehaviour
 
     private float healthSpawnTime;
     private float healthmax;
+    private float spawnFactor;
     public Transform player;
     // Start is called before the first frame update
     void Start()
     {
         max = GetComponent<MeshRenderer>().bounds.size.x / 2;
         antSpawnTime = 3;
-        healthSpawnTime = 3;
-        
+        healthSpawnTime = Random.Range(20.0f, 30.0f);
+        spawnFactor = 1.0f;
+
     }
 
     // Update is called once per frame
@@ -53,13 +55,13 @@ public class Spawner : MonoBehaviour
             antSpawnTime -= Time.deltaTime;
         }
 
-        if(healthSpawnTime <= 0 && player.GetComponent<Player>().health < 3)
+        if (healthSpawnTime <= 0 && player.GetComponent<Player>().health < 3)
         {
             Vector3 position = new Vector3(Random.Range(-max + 0.5f, max - 0.5f), transform.position.y, transform.position.z);
             Instantiate(healthPack, position, Quaternion.identity);
-            healthSpawnTime = Random.Range(3.0f, 3.0f);
+            healthSpawnTime = Random.Range(20.0f, 60.0f) * spawnFactor;
         }
-        else
+        else if (player.GetComponent<Player>().health < 3)
         {
             healthSpawnTime -= Time.deltaTime;
         }
