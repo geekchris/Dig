@@ -8,14 +8,18 @@ public class ChargeMeter : MonoBehaviour
     public Slider slider;
     private ParticleSystem particleSys;
     private Image bar;
-
+    public GameObject boostButton;
     public float FillSpeed = 0.5f;
+    public float DepleteSpeed = 0.2f;
     private float targetProgress = 0;
+
+    private bool isBoosting;
     private void Awake()
     {
         slider = gameObject.GetComponent<Slider>();
         particleSys = GameObject.Find("ChargeParticles").GetComponent<ParticleSystem>();
         bar = GameObject.Find("Fill").GetComponent<Image>();
+        isBoosting = false;
     }
     void Start()
     {
@@ -25,21 +29,37 @@ public class ChargeMeter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (slider.value < targetProgress && slider.value < 1.0f)
+        if(isBoosting)
         {
-            slider.value += FillSpeed * Time.deltaTime;
-            if (!particleSys.isPlaying)
-                particleSys.Play();
+            if(slider.value > targetProgress && slider.value > 0.0f)
+            {
+                slider.value -= DepleteSpeed * Time.deltaTime;
+            }
+
+            if(slider.value == 0.0f)
+            {
+                isBoosting = false;
+            }
         }
         else
         {
-            particleSys.Stop();
-        }
+            if (slider.value < targetProgress && slider.value < 1.0f)
+            {
+                slider.value += FillSpeed * Time.deltaTime;
+                if (!particleSys.isPlaying)
+                    particleSys.Play();
+            }
+            else
+            {
+                particleSys.Stop();
+            }
 
-        if(slider.value == 1.0f)
-        {
-            bar.color = Color.Lerp(Color.red, Color.blue, Mathf.PingPong(Time.time, 1));
+            if (slider.value == 1.0f)
+            {
+                bar.color = Color.Lerp(Color.red, Color.blue, Mathf.PingPong(Time.time, 1));
+                boostButton.SetActive(true);
 
+            }
         }
     }
 
@@ -52,8 +72,13 @@ public class ChargeMeter : MonoBehaviour
     {
         targetProgress = slider.value + newProgress;
     }
-    public void DecrementProgress(float newProgress)
+    public void DecrementProgress()
     {
-        //TO BE IMPLEMENTED
+        targetProgress = 0;
+        isBoosting = true;
+    }
+    public float getSliderValue()
+    {
+        return slider.value;
     }
 }

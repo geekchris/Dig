@@ -6,13 +6,14 @@ public class BackgroundScroll : MonoBehaviour
 {
 
     Material material;
-    Vector2 offset;
+    public Vector2 offset;
 
     public int xVelocity, yVelocity;
-    
+    public bool transitionLevel;
     private void Awake()
     {
         material = GetComponent<Renderer>().material;
+        transitionLevel = false;
 
     }
     // Start is called before the first frame update
@@ -24,6 +25,9 @@ public class BackgroundScroll : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        material.mainTextureOffset += offset * Time.deltaTime;
+        if(!transitionLevel)
+        {
+            material.mainTextureOffset += offset * Time.deltaTime;
+        } 
     }
 }
