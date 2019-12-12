@@ -41,7 +41,7 @@ public class RockObstacle : MonoBehaviour
             //other.GetComponent<Player>().tookDamage = true;
             //camShake.Shake(0.1f, 0.2f);
             //chargeMeter.IncrementProgress(0.1f);
-            chargeMeter.IncrementProgress(1.0f);
+            chargeMeter.IncrementProgress(0.1f);
             Destroy(gameObject);
         }
         else if(other.CompareTag("Player") && other.GetComponent<Player>().invincible == true)

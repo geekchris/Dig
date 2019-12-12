@@ -44,8 +44,4 @@ public class PauseMenu : MonoBehaviour
         //StartCoroutine("PauseWait");
     }
 
-    IEnumerator PauseWait()
-    {
-        yield return new WaitForSeconds(1.5f);
-    }
 }

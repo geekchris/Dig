@@ -18,7 +18,7 @@ public class BoostIcon : MonoBehaviour
     public Image BoostButton;
     public Score score;
     public BackgroundScroll background;
-
+    public LevelTransition lvlTransition;
     private float moveSpeed = 2f;
     private Vector3 pos;
     private Vector3 direction;
@@ -41,11 +41,23 @@ public class BoostIcon : MonoBehaviour
     {
         boostIcon.color = Color.Lerp(old, c, Mathf.PingPong(Time.time, 1));
 
-        if(chargeMeter.getSliderValue() == 0.0f && boosting)
+        if ((chargeMeter.getSliderValue() == 0.0f && boosting)) //|| lvlTransition.isLevelMoving == true)
         {
             boosting = false;
             background.offset = new Vector2(background.xVelocity, -2);
             score.GetComponent<Score>().normalizeScore();
+
+            GameObject[] ants = GameObject.FindGameObjectsWithTag("Ant");
+            GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+
+            foreach (GameObject ant in ants)
+            {
+                ant.GetComponent<AntObstacle>().vertSpeed = 2;
+            }
+            foreach (GameObject rock in rocks)
+            {
+                rock.GetComponent<RockObstacle>().vertSpeed = 2;
+            }
         }
         if (!boosting && BoostButton.enabled == false)
         {
@@ -55,7 +67,7 @@ public class BoostIcon : MonoBehaviour
             pos += velocity;
             Doug.transform.position = pos;
         }
-        if (boosting)
+        if (boosting) //&& lvlTransition.isLevelMoving == false)
         {
             direction.y = (-2f - Doug.transform.position.y);
             pos = Doug.transform.position;
@@ -63,9 +75,22 @@ public class BoostIcon : MonoBehaviour
             pos += velocity;
             Doug.transform.position = pos;
             camera.Shake(0.1f,0.2f);
+
+            GameObject[] ants = GameObject.FindGameObjectsWithTag("Ant");
+            GameObject[] rocks = GameObject.FindGameObjectsWithTag("Rock");
+
+            foreach (GameObject ant in ants)
+            {
+                ant.GetComponent<AntObstacle>().vertSpeed = 5;
+            }
+            foreach (GameObject rock in rocks)
+            {
+                rock.GetComponent<RockObstacle>().vertSpeed = 5;
+            }
+
         }
 
-        if(!boosting && BoostButton.enabled == false && Doug.transform.position.y > 2.99f)
+        if (!boosting && BoostButton.enabled == false && Doug.transform.position.y > 2.99f)
         {
             Doug.GetComponent<Player>().turnVulnerable();
             BoostButton.enabled = true;

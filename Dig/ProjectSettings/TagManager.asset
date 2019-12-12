@@ -8,6 +8,7 @@ TagManager:
   - GameMaster
   - Ant
   - Rock
+  - Spider
   layers:
   - Default
   - TransparentFX

@@ -13,7 +13,7 @@ public class AntObstacle : MonoBehaviour
     private Vector3 velocity;
     private float playerRadius = 0.5f;
     CameraShake camShake;
-
+    
     public bool isBoosting;
     void Start()
     {

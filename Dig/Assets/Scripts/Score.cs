@@ -6,13 +6,13 @@ public class Score : MonoBehaviour
 {
     public TMP_Text scoreText;
 
-    private double counter;
+    public static double counter = 0;
     private double boostFactor = 1.0;
     public GameObject player;
     // Start is called before the first frame update
     void Start()
     {
-        counter = 0;
+        //counter = 0;
     }
 
     // Update is called once per frame
@@ -27,5 +27,9 @@ public class Score : MonoBehaviour
     public void normalizeScore()
     {
         boostFactor = 1.0;
+    }
+    public void setCounter(double c)
+    {
+        counter = c;
     }
 }

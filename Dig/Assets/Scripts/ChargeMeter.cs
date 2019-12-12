@@ -14,6 +14,8 @@ public class ChargeMeter : MonoBehaviour
     private float targetProgress = 0;
 
     private bool isBoosting;
+
+    public LevelTransition lvlTransition;
     private void Awake()
     {
         slider = gameObject.GetComponent<Slider>();
@@ -39,6 +41,7 @@ public class ChargeMeter : MonoBehaviour
             if(slider.value == 0.0f)
             {
                 isBoosting = false;
+                bar.color = Color.red;
             }
         }
         else
@@ -54,7 +57,7 @@ public class ChargeMeter : MonoBehaviour
                 particleSys.Stop();
             }
 
-            if (slider.value == 1.0f)
+            if (slider.value == 1.0f) //&& lvlTransition.isLevelMoving == false)
             {
                 bar.color = Color.Lerp(Color.red, Color.blue, Mathf.PingPong(Time.time, 1));
                 boostButton.SetActive(true);
